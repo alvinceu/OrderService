@@ -1,7 +1,10 @@
 ﻿<Solution>
   <Folder Name="/common/" />
   <Folder Name="/src/" />
-  <Folder Name="/src/lab-1/" />
+  <Folder Name="/src/lab-1/">
+    <Project Path="src\lab-1\Lab1.Task3.Scenario\Lab1.Task3.Scenario.csproj" Type="Classic C#" />
+    <Project Path="src\lab-1\Lab1\Lab1.csproj" Type="Classic C#" />
+  </Folder>
   <Folder Name="/src/lab-2/" />
   <Folder Name="/src/lab-3/" />
   <Folder Name="/src/lab-4/" />
