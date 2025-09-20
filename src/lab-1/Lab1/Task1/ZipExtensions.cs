@@ -24,7 +24,7 @@ public static class ZipExtensions
 
         ArgumentNullException.ThrowIfNull(collections);
 
-        return ZipIterator(seed, x => x,  collections);
+        return ZipIterator(seed, x => x, collections);
     }
 
     private static IEnumerable<TResult> ZipIterator<TCollection, TResult>(

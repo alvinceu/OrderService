@@ -41,7 +41,7 @@ public static class ZipExtensionsAsync
 
         enumerators[0] = seed.GetAsyncEnumerator(cancellationToken);
 
-        for (int i = 0;  i < collections.Length; i++)
+        for (int i = 0; i < collections.Length; i++)
         {
             enumerators[i + 1] = collections[i].GetAsyncEnumerator(cancellationToken);
         }

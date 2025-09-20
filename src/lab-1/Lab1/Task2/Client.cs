@@ -9,7 +9,7 @@ public sealed class Client(ILibraryOperationService libraryService) : IRequestCl
 
     public Task<ResponseModel> SendAsync(RequestModel request, CancellationToken cancellationToken)
     {
-        var tcs = new TaskCompletionSource<ResponseModel>(cancellationToken,  TaskCreationOptions.RunContinuationsAsynchronously);
+        var tcs = new TaskCompletionSource<ResponseModel>(cancellationToken, TaskCreationOptions.RunContinuationsAsynchronously);
 
         if (cancellationToken.IsCancellationRequested)
         {
