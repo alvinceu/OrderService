@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Lab2.Task2.Internals.Timer;
+using Microsoft.Extensions.Hosting;
 
-namespace Lab2.Task2;
+namespace Lab2.Task2.Internals.Provider;
 
 internal sealed class ConfigurationUpdaterBackgroundService(
     ConfigurationServiceClientProvider provider,

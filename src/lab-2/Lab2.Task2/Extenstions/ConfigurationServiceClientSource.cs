@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Lab2.Task2.Internals.Provider;
+using Microsoft.Extensions.Configuration;
 
-namespace Lab2.Task2;
+namespace Lab2.Task2.Extenstions;
 
 public sealed class ConfigurationServiceClientSource : IConfigurationSource
 {

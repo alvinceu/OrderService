@@ -1,6 +1,6 @@
-﻿namespace Lab2.Task2;
+﻿namespace Lab2.Task2.Internals.Provider;
 
-public interface IConfigurationServiceClientAdapter
+internal interface IConfigurationServiceClientAdapter
 {
     Task<IDictionary<string, string?>> LoadAsync(CancellationToken cancellationToken = default);
 }

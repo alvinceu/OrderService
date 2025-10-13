@@ -1,4 +1,4 @@
-﻿namespace Lab2.Task1;
+﻿namespace Lab2.Task1.Abstractions;
 
 public interface IConfigurationServiceClient
 {

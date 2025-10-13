@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
-using Lab2.Task1;
-using Lab2.Task2;
+using Lab2.Task1.Extensions;
+using Lab2.Task2.Extenstions;
+using Lab2.Task2.Internals.Provider;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

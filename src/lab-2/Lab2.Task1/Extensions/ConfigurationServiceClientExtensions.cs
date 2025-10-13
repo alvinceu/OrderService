@@ -1,7 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Lab2.Task1.Abstractions;
+using Lab2.Task1.Internals.HandMade;
+using Lab2.Task1.Internals.Refit;
+using Microsoft.Extensions.DependencyInjection;
 using Refit;
 
-namespace Lab2.Task1;
+namespace Lab2.Task1.Extensions;
 
 public static class ConfigurationServiceClientExtensions
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 
-namespace Lab2.Task2;
+namespace Lab2.Task2.Internals.Timer;
 
 internal sealed class ConfigurationProviderUpdaterTimerPeriodicTimer : IConfigurationProviderUpdaterTimerPeriodicTimer, IDisposable
 {

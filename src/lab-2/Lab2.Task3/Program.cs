@@ -1,5 +1,5 @@
-﻿using Lab2.Task1;
-using Lab2.Task2;
+﻿using Lab2.Task1.Extensions;
+using Lab2.Task2.Extenstions;
 using Lab2.Task3;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

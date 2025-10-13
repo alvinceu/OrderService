@@ -1,4 +1,4 @@
-﻿namespace Lab2.Task1;
+﻿namespace Lab2.Task1.Internals.Refit;
 
 internal sealed class ConfigurationServiceRefitQueryParameters
 {

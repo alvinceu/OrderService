@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Lab2.Task2.Internals.Provider;
+using Lab2.Task2.Internals.Timer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Lab2.Task2;
+namespace Lab2.Task2.Extenstions;
 
 public static class ConfigurationServiceClientProviderExtensions
 {

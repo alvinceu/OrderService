@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace Lab2.Task2;
+namespace Lab2.Task2.Internals.Provider;
 
 public sealed class ConfigurationServiceClientProvider : ConfigurationProvider
 {

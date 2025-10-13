@@ -1,6 +1,6 @@
-﻿using Lab2.Task1;
+﻿using Lab2.Task1.Abstractions;
 
-namespace Lab2.Task2;
+namespace Lab2.Task2.Internals.Provider;
 
 internal sealed class ConfigurationServiceClientAdapter(IConfigurationServiceClient client) : IConfigurationServiceClientAdapter
 {

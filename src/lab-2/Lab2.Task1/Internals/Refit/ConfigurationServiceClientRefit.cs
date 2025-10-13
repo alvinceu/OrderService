@@ -1,9 +1,10 @@
-﻿using System.Net.Http.Json;
+﻿using Lab2.Task1.Abstractions;
+using Lab2.Task1.Commons;
 using System.Runtime.CompilerServices;
 
-namespace Lab2.Task1;
+namespace Lab2.Task1.Internals.Refit;
 
-internal sealed class ConfigurationServiceClient(IHttpClientFactory factory) : IConfigurationServiceClient
+internal sealed class ConfigurationServiceClientRefit(IConfigurationServiceClientRefit service) : IConfigurationServiceClient
 {
     private int MaxPageSize => 200;
 
@@ -38,8 +39,7 @@ internal sealed class ConfigurationServiceClient(IHttpClientFactory factory) : I
 
     private async Task<Paginated<KeyValuePair<string, string>>?> GetConfigurationsAsync(int pageSize, string? pageToken = null, CancellationToken cancellationToken = default)
     {
-        HttpClient client = factory.CreateClient(ConfigurationServiceClientExtensions.HttpClientName);
-        string query = pageToken is null ? $"?pageSize={pageSize}" : $"?pageSize={pageSize}&pageToken={pageToken}";
-        return await client.GetFromJsonAsync<Paginated<KeyValuePair<string, string>>>($"/configurations{query}", cancellationToken: cancellationToken);
+        var parameters = new ConfigurationServiceRefitQueryParameters { PageSize = pageSize, PageToken = pageToken };
+        return await service.GetConfigurationsAsync(parameters, cancellationToken);
     }
 }
