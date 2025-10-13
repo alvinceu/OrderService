@@ -5,29 +5,11 @@ namespace Lab2.Task1;
 
 internal sealed class ConfigurationServiceClient(IHttpClientFactory factory) : IConfigurationServiceClient
 {
-    public async Task<Paginated<KeyValuePair<string, string>>?> GetConfigurationsAsync(int pageSize, string? pageToken = null, CancellationToken cancellationToken = default)
-    {
-        HttpClient client = factory.CreateClient(ConfigurationServiceClientConstants.HttpClientName);
-        string query = pageToken is null ? $"?pageSize={pageSize}" : $"?pageSize={pageSize}&pageToken={pageToken}";
-        return await client.GetFromJsonAsync<Paginated<KeyValuePair<string, string>>>($"/configurations{query}", cancellationToken: cancellationToken);
-    }
+    private int MaxPageSize => 200;
 
-    public async Task AssignConfigurationAsync(string key, string value, CancellationToken cancellationToken = default)
+    public async IAsyncEnumerable<KeyValuePair<string, string>> GetAllConfigurationAsync([EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        HttpClient client = factory.CreateClient(ConfigurationServiceClientConstants.HttpClientName);
-        var body = new { key, value };
-        await client.PostAsJsonAsync("/configurations", body, cancellationToken: cancellationToken);
-    }
-
-    public async Task DeleteConfigurationAsync(string key, CancellationToken cancellationToken = default)
-    {
-        HttpClient client = factory.CreateClient(ConfigurationServiceClientConstants.HttpClientName);
-        await client.DeleteAsync($"/configurations/{key}", cancellationToken);
-    }
-
-    public async IAsyncEnumerable<KeyValuePair<string, string>> GetAllConfigurationAsync([EnumeratorCancellation] CancellationToken cancellationToken = default)
-    {
-        int pageSize = ConfigurationServiceClientConstants.MaxPageSize;
+        int pageSize = MaxPageSize;
         string? pageToken = null;
 
         while (!cancellationToken.IsCancellationRequested)
@@ -52,5 +34,12 @@ internal sealed class ConfigurationServiceClient(IHttpClientFactory factory) : I
 
             pageToken = response.PageToken;
         }
+    }
+
+    private async Task<Paginated<KeyValuePair<string, string>>?> GetConfigurationsAsync(int pageSize, string? pageToken = null, CancellationToken cancellationToken = default)
+    {
+        HttpClient client = factory.CreateClient(ConfigurationServiceClientExtensions.HttpClientName);
+        string query = pageToken is null ? $"?pageSize={pageSize}" : $"?pageSize={pageSize}&pageToken={pageToken}";
+        return await client.GetFromJsonAsync<Paginated<KeyValuePair<string, string>>>($"/configurations{query}", cancellationToken: cancellationToken);
     }
 }

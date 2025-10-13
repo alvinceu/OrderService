@@ -5,21 +5,18 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-var timer = new PeriodicTimer(TimeSpan.FromSeconds(2));
-
-HostApplicationBuilder builder = Host.CreateApplicationBuilder();
+HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 
 builder
     .Services
-    .AddConfigurationServiceRefit()
-    .ConfigureHttpClient(clint => clint.BaseAddress = new Uri("http://localhost:8080"));
-
-builder
-    .AddConfigurationProvider(timer);
+    .AddConfigurationServiceRefit();
 
 builder
     .Services
     .AddHostedService<OptionRender>();
+
+builder
+    .AddConfigurationProvider();
 
 builder
     .Services
@@ -30,11 +27,5 @@ builder
     .ClearProviders();
 
 using IHost host = builder.Build();
-
-IConfigurationUpdaterBackgroundService background = host
-    .Services
-    .GetRequiredService<IConfigurationUpdaterBackgroundService>();
-
-background.Start();
 
 host.Run();

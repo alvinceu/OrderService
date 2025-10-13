@@ -1,31 +1,19 @@
-﻿namespace Lab2.Task2;
+﻿using Microsoft.Extensions.Hosting;
+
+namespace Lab2.Task2;
 
 internal sealed class ConfigurationUpdaterBackgroundService(
     ConfigurationServiceClientProvider provider,
     IConfigurationServiceClientAdapter adapter,
-    PeriodicTimer timer) : IConfigurationUpdaterBackgroundService
+    IConfigurationProviderUpdaterTimerPeriodicTimer timer) : BackgroundService
 {
-    private bool _isStarted = false;
-
-    public void Start(CancellationToken cancellationToken = default)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        if (Interlocked.Exchange(ref _isStarted, true))
+        while (await timer.WaitForNextTickAsync(stoppingToken))
         {
-            return;
-        }
+            IDictionary<string, string?> data = await adapter.LoadAsync(stoppingToken);
 
-        Task.Run(UpdatePeriodically, cancellationToken);
-
-        return;
-
-        async Task? UpdatePeriodically()
-        {
-            while (await timer.WaitForNextTickAsync(cancellationToken))
-            {
-                IDictionary<string, string?> data = await adapter.LoadAsync(cancellationToken);
-
-                provider.AcceptData(data);
-            }
+            provider.AcceptData(data);
         }
     }
 }

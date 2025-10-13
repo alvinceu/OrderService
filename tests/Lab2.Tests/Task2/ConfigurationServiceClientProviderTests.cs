@@ -13,22 +13,16 @@ namespace Lab2.Tests.Task2;
 public class ConfigurationServiceClientProviderTests
 {
     [Fact]
-    public async Task ShouldAddConfigurationWhenProviderIsEmptyAndNewConfigAdded()
+    public void ShouldAddConfigurationWhenProviderIsEmptyAndNewConfigAdded()
     {
         // Arrange 1
-        var timer = new PeriodicTimer(TimeSpan.FromMilliseconds(1));
-
         IConfigurationServiceClient serviceClientMock = Substitute.For<IConfigurationServiceClient>();
 
         // Arrange 2 : Configure services
         HostApplicationBuilder builder = Host.CreateApplicationBuilder();
 
         builder
-            .Services
-            .AddConfigurationServiceRefit()
-            .ConfigureHttpClient(clint => clint.BaseAddress = new Uri("http://localhost:8080"));
-
-        builder.AddConfigurationProvider(timer);
+            .AddConfigurationProvider();
 
         builder
             .Services
@@ -40,60 +34,6 @@ public class ConfigurationServiceClientProviderTests
         IConfiguration config = host
             .Services
             .GetRequiredService<IConfiguration>();
-
-        IConfigurationUpdaterBackgroundService background = host
-            .Services
-            .GetRequiredService<IConfigurationUpdaterBackgroundService>();
-
-        // Arrange 4 : Setting a test value for a mock service
-        serviceClientMock
-            .GetAllConfigurationAsync()
-            .Returns(new List<KeyValuePair<string, string>>
-            {
-                new("str1", "str2"),
-            }.ToAsyncEnumerable());
-
-        // Act
-        background.Start();
-
-        await Task.Delay(TimeSpan.FromMilliseconds(100));
-
-        // Assert
-        config["str1"].Should().Be("str2");
-    }
-
-    [Fact]
-    public async Task ShouldNotUpdateConfigurationWhenSameConfigAddedToProvider()
-    {
-        // Arrange 1
-        var timer = new PeriodicTimer(TimeSpan.FromMilliseconds(1));
-
-        IConfigurationServiceClient serviceClientMock = Substitute.For<IConfigurationServiceClient>();
-
-        // Arrange 2 : Configure services
-        HostApplicationBuilder builder = Host.CreateApplicationBuilder();
-
-        builder
-            .Services
-            .AddConfigurationServiceRefit()
-            .ConfigureHttpClient(clint => clint.BaseAddress = new Uri("http://localhost:8080"));
-
-        builder.AddConfigurationProvider(timer);
-
-        builder
-            .Services
-            .AddSingleton(serviceClientMock);
-
-        using IHost host = builder.Build();
-
-        // Arrange 3 : Pull the necessary services
-        IConfiguration config = host
-            .Services
-            .GetRequiredService<IConfiguration>();
-
-        IConfigurationUpdaterBackgroundService background = host
-            .Services
-            .GetRequiredService<IConfigurationUpdaterBackgroundService>();
 
         var configRoot = config as IConfigurationRoot;
 
@@ -102,15 +42,51 @@ public class ConfigurationServiceClientProviderTests
             .OfType<ConfigurationServiceClientProvider>()
             .FirstOrDefault() ?? throw new InvalidOperationException("ConfigurationServiceClientProvider not found");
 
-        // Arrange 4 : Setting a test value for a mock service
-        serviceClientMock
-            .GetAllConfigurationAsync()
-            .Returns(new List<KeyValuePair<string, string>>
-            {
-                new("str1", "str2"),
-            }.ToAsyncEnumerable());
+        // Arrange 4 : to track changes
+        IChangeToken token = config.GetReloadToken();
 
-        // Arrange 5 : Pre-load data config
+        // Act
+        provider.AcceptData(new Dictionary<string, string?>()
+        {
+            { "str1", "str2" },
+        });
+
+        // Assert
+        config["str1"].Should().Be("str2");
+        token.HasChanged.Should().BeTrue();
+    }
+
+    [Fact]
+    public void ShouldNotUpdateConfigurationWhenSameConfigAddedToProvider()
+    {
+        // Arrange 1
+        IConfigurationServiceClient serviceClientMock = Substitute.For<IConfigurationServiceClient>();
+
+        // Arrange 2 : Configure services
+        HostApplicationBuilder builder = Host.CreateApplicationBuilder();
+
+        builder
+            .Services
+            .AddSingleton(serviceClientMock);
+
+        builder
+            .AddConfigurationProvider();
+
+        using IHost host = builder.Build();
+
+        // Arrange 3 : Pull the necessary services
+        IConfiguration config = host
+            .Services
+            .GetRequiredService<IConfiguration>();
+
+        var configRoot = config as IConfigurationRoot;
+
+        ConfigurationServiceClientProvider provider = configRoot?
+            .Providers
+            .OfType<ConfigurationServiceClientProvider>()
+            .FirstOrDefault() ?? throw new InvalidOperationException("ConfigurationServiceClientProvider not found");
+
+        // Arrange 4 : Pre-load data config
         provider.AcceptData(new Dictionary<string, string?>()
         {
             { "str1", "str2" },
@@ -120,31 +96,31 @@ public class ConfigurationServiceClientProviderTests
         IChangeToken token = config.GetReloadToken();
 
         // Act
-        background.Start();
-
-        await Task.Delay(TimeSpan.FromMilliseconds(100));
+        provider.AcceptData(new Dictionary<string, string?>()
+        {
+            { "str1", "str2" },
+        });
 
         // Assert
         token.HasChanged.Should().BeFalse();
     }
 
     [Fact]
-    public async Task ShouldUpdateValueWhenConfigWithSameKeyButDifferentValueAdded()
+    public void ShouldUpdateValueWhenConfigWithSameKeyButDifferentValueAdded()
     {
         // Arrange
-        var timer = new PeriodicTimer(TimeSpan.FromMilliseconds(1));
-
         IConfigurationServiceClient serviceClientMock = Substitute.For<IConfigurationServiceClient>();
 
         // Arrange 2 : Configure services
         HostApplicationBuilder builder = Host.CreateApplicationBuilder();
 
         builder
+            .AddConfigurationProvider();
+
+        builder
             .Services
             .AddConfigurationServiceRefit()
             .ConfigureHttpClient(clint => clint.BaseAddress = new Uri("http://localhost:8080"));
-
-        builder.AddConfigurationProvider(timer);
 
         builder
             .Services
@@ -156,10 +132,6 @@ public class ConfigurationServiceClientProviderTests
         IConfiguration config = host
             .Services
             .GetRequiredService<IConfiguration>();
-
-        IConfigurationUpdaterBackgroundService background = host
-            .Services
-            .GetRequiredService<IConfigurationUpdaterBackgroundService>();
 
         var configRoot = config as IConfigurationRoot;
 
@@ -186,9 +158,10 @@ public class ConfigurationServiceClientProviderTests
         IChangeToken token = config.GetReloadToken();
 
         // Act
-        background.Start();
-
-        await Task.Delay(TimeSpan.FromMilliseconds(100));
+        provider.AcceptData(new Dictionary<string, string?>()
+        {
+            { "str1", "new_str" },
+        });
 
         // Assert
         token.HasChanged.Should().BeTrue();
@@ -197,11 +170,9 @@ public class ConfigurationServiceClientProviderTests
     }
 
     [Fact]
-    public async Task ShouldClearAllConfigurationsWhenEmptyCollectionProvided()
+    public void ShouldClearAllConfigurationsWhenEmptyCollectionProvided()
     {
         // Arrange
-        var timer = new PeriodicTimer(TimeSpan.FromMilliseconds(1));
-
         IConfigurationServiceClient serviceClientMock = Substitute.For<IConfigurationServiceClient>();
 
         // Arrange 2 : Configure services
@@ -212,11 +183,12 @@ public class ConfigurationServiceClientProviderTests
             .AddConfigurationServiceRefit()
             .ConfigureHttpClient(clint => clint.BaseAddress = new Uri("http://localhost:8080"));
 
-        builder.AddConfigurationProvider(timer);
-
         builder
             .Services
             .AddSingleton(serviceClientMock);
+
+        builder
+            .AddConfigurationProvider();
 
         using IHost host = builder.Build();
 
@@ -224,10 +196,6 @@ public class ConfigurationServiceClientProviderTests
         IConfiguration config = host
             .Services
             .GetRequiredService<IConfiguration>();
-
-        IConfigurationUpdaterBackgroundService background = host
-            .Services
-            .GetRequiredService<IConfigurationUpdaterBackgroundService>();
 
         var configRoot = config as IConfigurationRoot;
 
@@ -251,9 +219,7 @@ public class ConfigurationServiceClientProviderTests
         IChangeToken token = config.GetReloadToken();
 
         // Act
-        background.Start();
-
-        await Task.Delay(TimeSpan.FromMilliseconds(100));
+        provider.AcceptData(new Dictionary<string, string?>());
 
         // Assert
         token.HasChanged.Should().BeTrue();

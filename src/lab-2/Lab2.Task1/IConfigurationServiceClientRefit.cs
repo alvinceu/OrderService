@@ -6,10 +6,4 @@ internal interface IConfigurationServiceClientRefit
 {
     [Get("/configurations")]
     Task<Paginated<KeyValuePair<string, string>>?> GetConfigurationsAsync([Query] ConfigurationServiceRefitQueryParameters parameters, CancellationToken cancellationToken = default);
-
-    [Post("/configurations")]
-    Task AssignConfigurationAsync([Body] KeyValuePair<string, string> body, CancellationToken cancellationToken = default);
-
-    [Delete("/configurations/{key}")]
-    Task DeleteConfigurationAsync(string key, CancellationToken cancellationToken = default);
 }

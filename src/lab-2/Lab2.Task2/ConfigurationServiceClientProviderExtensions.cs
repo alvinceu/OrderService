@@ -6,7 +6,7 @@ namespace Lab2.Task2;
 
 public static class ConfigurationServiceClientProviderExtensions
 {
-    public static IHostApplicationBuilder AddConfigurationProvider(this IHostApplicationBuilder builder, PeriodicTimer timer)
+    public static IHostApplicationBuilder AddConfigurationProvider(this IHostApplicationBuilder builder)
     {
         builder
             .Configuration
@@ -14,20 +14,31 @@ public static class ConfigurationServiceClientProviderExtensions
 
         builder
             .Services
+            .Configure<TimerOptions>(builder.Configuration.GetSection(TimerOptions.SectionName));
+
+        builder
+            .Services
+            .AddSingleton<IConfigurationProviderUpdaterTimerPeriodicTimer, ConfigurationProviderUpdaterTimerPeriodicTimer>();
+
+        builder
+            .Services
             .AddSingleton<IConfigurationServiceClientAdapter, ConfigurationServiceClientAdapter>()
-            .AddSingleton<IConfigurationUpdaterBackgroundService>(background =>
+            .AddHostedService(provider =>
             {
-                IConfiguration config = background.GetRequiredService<IConfiguration>();
+                IConfiguration config = provider.GetRequiredService<IConfiguration>();
+
+                IConfigurationProviderUpdaterTimerPeriodicTimer timer = provider.GetRequiredService<IConfigurationProviderUpdaterTimerPeriodicTimer>();
+
                 var configRoot = config as IConfigurationRoot;
 
-                ConfigurationServiceClientProvider provider = configRoot?
+                ConfigurationServiceClientProvider configurationServiceProvider = configRoot?
                     .Providers
                     .OfType<ConfigurationServiceClientProvider>()
                     .FirstOrDefault() ?? throw new InvalidOperationException("ConfigurationServiceClientProvider not found");
 
-                IConfigurationServiceClientAdapter adapter = background.GetRequiredService<IConfigurationServiceClientAdapter>();
+                IConfigurationServiceClientAdapter adapter = provider.GetRequiredService<IConfigurationServiceClientAdapter>();
 
-                return new ConfigurationUpdaterBackgroundService(provider, adapter, timer);
+                return new ConfigurationUpdaterBackgroundService(configurationServiceProvider, adapter, timer);
             });
 
         return builder;

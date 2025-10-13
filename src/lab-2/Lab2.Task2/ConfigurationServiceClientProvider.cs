@@ -11,7 +11,21 @@ public sealed class ConfigurationServiceClientProvider : ConfigurationProvider
             return;
         }
 
-        Data = data;
+        foreach (KeyValuePair<string, string?> kvp in data)
+        {
+            if (!Data.TryGetValue(kvp.Key, out string? currentValue) ||
+                !string.Equals(currentValue, kvp.Value, StringComparison.OrdinalIgnoreCase))
+            {
+                Data[kvp.Key] = kvp.Value;
+            }
+        }
+
+        var keysToRemove = Data.Keys.Except(data.Keys).ToList();
+        foreach (string? key in keysToRemove)
+        {
+            Data.Remove(key);
+        }
+
         OnReload();
 
         return;

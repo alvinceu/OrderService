@@ -4,26 +4,11 @@ namespace Lab2.Task1;
 
 internal sealed class ConfigurationServiceClientRefit(IConfigurationServiceClientRefit service) : IConfigurationServiceClient
 {
-    public async Task<Paginated<KeyValuePair<string, string>>?> GetConfigurationsAsync(int pageSize, string? pageToken = null, CancellationToken cancellationToken = default)
-    {
-        var parameters = new ConfigurationServiceRefitQueryParameters { PageSize = pageSize, PageToken = pageToken };
-        return await service.GetConfigurationsAsync(parameters, cancellationToken);
-    }
+    private int MaxPageSize => 200;
 
-    public async Task AssignConfigurationAsync(string key, string value, CancellationToken cancellationToken = default)
+    public async IAsyncEnumerable<KeyValuePair<string, string>> GetAllConfigurationAsync([EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        var body = new KeyValuePair<string, string>(key, value);
-        await service.AssignConfigurationAsync(body, cancellationToken);
-    }
-
-    public async Task DeleteConfigurationAsync(string key, CancellationToken cancellationToken = default)
-    {
-        await service.DeleteConfigurationAsync(key, cancellationToken);
-    }
-
-    public async IAsyncEnumerable<KeyValuePair<string, string>> GetAllConfigurationAsync([EnumeratorCancellation] CancellationToken cancellationToken = default)
-    {
-        int pageSize = ConfigurationServiceClientConstants.MaxPageSize;
+        int pageSize = MaxPageSize;
         string? pageToken = null;
 
         while (!cancellationToken.IsCancellationRequested)
@@ -48,5 +33,11 @@ internal sealed class ConfigurationServiceClientRefit(IConfigurationServiceClien
 
             pageToken = response.PageToken;
         }
+    }
+
+    private async Task<Paginated<KeyValuePair<string, string>>?> GetConfigurationsAsync(int pageSize, string? pageToken = null, CancellationToken cancellationToken = default)
+    {
+        var parameters = new ConfigurationServiceRefitQueryParameters { PageSize = pageSize, PageToken = pageToken };
+        return await service.GetConfigurationsAsync(parameters, cancellationToken);
     }
 }
