@@ -1,32 +1,20 @@
-﻿using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using SixLabors.ImageSharp.Processing;
 using Spectre.Console;
 
 namespace Lab2.Task3;
 
-public sealed class OptionRender : BackgroundService
+public sealed class OptionRender
 {
     private readonly IHttpClientFactory _factory;
-    private TaskCompletionSource<RenderOptions> _tcs = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
     public OptionRender(IHttpClientFactory factory, IOptionsMonitor<RenderOptions> monitor)
     {
         _factory = factory;
-        monitor.OnChange(option => _tcs.SetResult(option));
+        monitor.OnChange(async void (option) => await Render(option));
     }
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-    {
-        while (!stoppingToken.IsCancellationRequested)
-        {
-            RenderOptions option = await _tcs.Task;
-            _tcs = new TaskCompletionSource<RenderOptions>(TaskCreationOptions.RunContinuationsAsynchronously);
-            await Render(option);
-        }
-    }
-
-    private async Task Render(RenderOptions values)
+    public async Task Render(RenderOptions values)
     {
         AnsiConsole.Clear();
         if (!string.IsNullOrWhiteSpace(values.Figlet))

@@ -13,7 +13,7 @@ builder
 
 builder
     .Services
-    .AddHostedService<OptionRender>();
+    .AddSingleton<OptionRender>();
 
 builder
     .AddConfigurationProvider();
@@ -27,5 +27,7 @@ builder
     .ClearProviders();
 
 using IHost host = builder.Build();
+
+OptionRender render = host.Services.GetRequiredService<OptionRender>();
 
 host.Run();
