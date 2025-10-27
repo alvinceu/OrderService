@@ -14,7 +14,7 @@ public sealed class OptionRender
         monitor.OnChange(async void (option) => await Render(option));
     }
 
-    public async Task Render(RenderOptions values)
+    private async Task Render(RenderOptions values)
     {
         AnsiConsole.Clear();
         if (!string.IsNullOrWhiteSpace(values.Figlet))
