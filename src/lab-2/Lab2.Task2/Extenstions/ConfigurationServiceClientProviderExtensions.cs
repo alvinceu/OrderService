@@ -3,6 +3,7 @@ using Lab2.Task2.Internals.Timer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace Lab2.Task2.Extenstions;
 
@@ -20,16 +21,12 @@ public static class ConfigurationServiceClientProviderExtensions
 
         builder
             .Services
-            .AddSingleton<IConfigurationProviderUpdaterTimerPeriodicTimer, ConfigurationProviderUpdaterTimerPeriodicTimer>();
-
-        builder
-            .Services
             .AddSingleton<IConfigurationServiceClientAdapter, ConfigurationServiceClientAdapter>()
             .AddHostedService(provider =>
             {
                 IConfiguration config = provider.GetRequiredService<IConfiguration>();
 
-                IConfigurationProviderUpdaterTimerPeriodicTimer timer = provider.GetRequiredService<IConfigurationProviderUpdaterTimerPeriodicTimer>();
+                IOptions<TimerOptions> options = provider.GetRequiredService<IOptions<TimerOptions>>();
 
                 var configRoot = config as IConfigurationRoot;
 
@@ -40,7 +37,7 @@ public static class ConfigurationServiceClientProviderExtensions
 
                 IConfigurationServiceClientAdapter adapter = provider.GetRequiredService<IConfigurationServiceClientAdapter>();
 
-                return new ConfigurationUpdaterBackgroundService(configurationServiceProvider, adapter, timer);
+                return new ConfigurationUpdaterBackgroundService(configurationServiceProvider, adapter, options.Value);
             });
 
         return builder;
