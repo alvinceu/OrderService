@@ -5,7 +5,11 @@
     <Project Path="src\lab-1\Lab1.Task3.Scenario\Lab1.Task3.Scenario.csproj" Type="Classic C#" />
     <Project Path="src\lab-1\Lab1\Lab1.csproj" Type="Classic C#" />
   </Folder>
-  <Folder Name="/src/lab-2/" />
+  <Folder Name="/src/lab-2/">
+    <Project Path="src\lab-2\Lab2.Task1\Lab2.Task1.csproj" Type="Classic C#" />
+    <Project Path="src\lab-2\Lab2.Task2\Lab2.Task2.csproj" Type="Classic C#" />
+    <Project Path="src\lab-2\Lab2.Task3\Lab2.Task3.csproj" Type="Classic C#" />
+  </Folder>
   <Folder Name="/src/lab-3/" />
   <Folder Name="/src/lab-4/" />
   <Folder Name="/src/lab-5/" />

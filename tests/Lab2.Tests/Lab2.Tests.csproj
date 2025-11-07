@@ -2,13 +2,23 @@
 
     <PropertyGroup>
         <IsPackable>false</IsPackable>
+        <NoWarn>CA1506</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="coverlet.collector"/>
+        <PackageReference Include="FluentAssertions" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" />
+        <PackageReference Include="Microsoft.Extensions.Http" />
         <PackageReference Include="Microsoft.NET.Test.Sdk"/>
         <PackageReference Include="xunit"/>
         <PackageReference Include="xunit.runner.visualstudio"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\lab-2\Lab2.Task1\Lab2.Task1.csproj" />
+      <ProjectReference Include="..\..\src\lab-2\Lab2.Task2\Lab2.Task2.csproj" />
     </ItemGroup>
 
 </Project>
