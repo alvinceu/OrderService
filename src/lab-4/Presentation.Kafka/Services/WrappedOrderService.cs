@@ -56,6 +56,11 @@ internal sealed class WrappedOrderService : IOrderService
         return await _innerOrderService.AddOrderItemAsync(orderId, productId, quantity, ct);
     }
 
+    public async Task SetCancelledOrderInCreatedStateAsync(OrderId orderId, CancellationToken ct)
+    {
+        await _innerOrderService.SetCancelledOrderInCreatedStateAsync(orderId, ct);
+    }
+
     public async Task RemoveOrderItemAsync(OrderItemId orderItemId, CancellationToken ct)
     {
         await _innerOrderService.RemoveOrderItemAsync(orderItemId, ct);

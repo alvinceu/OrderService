@@ -112,6 +112,11 @@ internal sealed class OrderService(
 
     public async Task SetCancelledAsync(OrderId orderId, CancellationToken ct)
     {
+        await ChangeStatus(orderId, OrderState.Cancelled, ct);
+    }
+
+    public async Task SetCancelledOrderInCreatedStateAsync(OrderId orderId, CancellationToken ct)
+    {
         using TransactionScope transaction = CreateTransactionScope();
 
         Order order = await orderRepository.FindOrderByIdAsync(orderId, ct)

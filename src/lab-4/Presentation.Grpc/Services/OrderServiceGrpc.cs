@@ -92,7 +92,7 @@ internal sealed class OrderServiceGrpc : OrderService.OrderServiceBase
     {
         _setOrderStateCancelledRequestValidator.Validate(request);
 
-        await _orderService.SetCancelledAsync(OrderId.Create(request.OrderId), context.CancellationToken);
+        await _orderService.SetCancelledOrderInCreatedStateAsync(OrderId.Create(request.OrderId), context.CancellationToken);
 
         return new SetOrderStateCancelledResponse();
     }

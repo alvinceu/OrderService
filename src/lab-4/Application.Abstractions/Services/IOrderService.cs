@@ -10,6 +10,8 @@ public interface IOrderService
 
     Task<OrderItem> AddOrderItemAsync(OrderId orderId, ProductId productId, int quantity, CancellationToken ct);
 
+    Task SetCancelledOrderInCreatedStateAsync(OrderId orderId, CancellationToken ct);
+
     Task RemoveOrderItemAsync(OrderItemId orderItemId, CancellationToken ct);
 
     Task SetProcessingAsync(OrderId orderId, CancellationToken ct);
