@@ -2,5 +2,5 @@
 
 internal interface IConfigurationServiceClientAdapter
 {
-    Task<IDictionary<string, string?>> LoadAsync(CancellationToken cancellationToken = default);
+    Task<IDictionary<string, string?>> LoadAsync(CancellationToken ct);
 }

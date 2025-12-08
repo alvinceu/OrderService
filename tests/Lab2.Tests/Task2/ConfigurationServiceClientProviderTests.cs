@@ -19,7 +19,6 @@ public class ConfigurationServiceClientProviderTests
         HostApplicationBuilder builder = Host.CreateApplicationBuilder();
 
         builder
-            .Services
             .AddConfigurationServiceRefit();
 
         builder
@@ -60,7 +59,6 @@ public class ConfigurationServiceClientProviderTests
         HostApplicationBuilder builder = Host.CreateApplicationBuilder();
 
         builder
-            .Services
             .AddConfigurationServiceRefit();
 
         builder
@@ -109,7 +107,6 @@ public class ConfigurationServiceClientProviderTests
             .AddConfigurationProvider();
 
         builder
-            .Services
             .AddConfigurationServiceRefit();
 
         using IHost host = builder.Build();
@@ -154,10 +151,7 @@ public class ConfigurationServiceClientProviderTests
         HostApplicationBuilder builder = Host.CreateApplicationBuilder();
 
         builder
-            .Services
-            .AddConfigurationServiceRefit()
-            .ConfigureHttpClient(clint => clint.BaseAddress = new Uri("http://localhost:8080"));
-
+            .AddConfigurationServiceRefit();
         builder
             .AddConfigurationProvider();
 

@@ -2,7 +2,7 @@
 
 namespace Lab2.Task2.Internals.Provider;
 
-public sealed class ConfigurationServiceClientProvider : ConfigurationProvider
+internal sealed class ConfigurationServiceClientProvider : ConfigurationProvider
 {
     internal void AcceptData(IDictionary<string, string?> data)
     {

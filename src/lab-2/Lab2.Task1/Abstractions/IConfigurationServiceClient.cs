@@ -2,5 +2,5 @@
 
 public interface IConfigurationServiceClient
 {
-    IAsyncEnumerable<KeyValuePair<string, string>> GetAllConfigurationAsync(CancellationToken cancellationToken = default);
+    IAsyncEnumerable<KeyValuePair<string, string>> GetAllConfigurationAsync(CancellationToken ct);
 }

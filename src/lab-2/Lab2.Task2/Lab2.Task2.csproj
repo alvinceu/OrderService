@@ -18,6 +18,7 @@
 
     <ItemGroup>
         <InternalsVisibleTo Include="Lab2.Tests"/>
+        <InternalsVisibleTo Include="Lab3.Task1.Tests"/>
     </ItemGroup>
     
 </Project>

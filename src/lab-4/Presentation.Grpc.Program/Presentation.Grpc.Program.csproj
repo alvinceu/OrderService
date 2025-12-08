@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <RootNamespace>Presentation.Grpc.Program</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\lab-2\Lab2.Task1\Lab2.Task1.csproj" />
+      <ProjectReference Include="..\..\lab-2\Lab2.Task2\Lab2.Task2.csproj" />
+      <ProjectReference Include="..\Application.Abstractions\Application.Abstractions.csproj" />
+      <ProjectReference Include="..\Application.Models\Application.Models.csproj" />
+      <ProjectReference Include="..\Application\Application.csproj" />
+      <ProjectReference Include="..\Infrastructure.Persistence\Infrastructure.Persistence.csproj" />
+      <ProjectReference Include="..\Presentation.Grpc\Presentation.Grpc.csproj" />
+      <ProjectReference Include="..\Presentation.Kafka\Presentation.Kafka.csproj" />
+    </ItemGroup>
+
+</Project>
