@@ -41,10 +41,10 @@ internal sealed class KafkaMessageIngestWorker<TKey, TValue>
             .SetValueDeserializer(_valueDeserializer)
             .Build();
 
-        consumer.Subscribe(_kafkaConsumerConfigOptions.Topic); // ты враг?
+        consumer.Subscribe(_kafkaConsumerConfigOptions.Topic);
 
         try
-        { // ты враг?
+        {
             while (ct.IsCancellationRequested is false)
             {
                 ConsumeResult<TKey, TValue> consumerResult = consumer.Consume(ct);

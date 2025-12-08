@@ -1,4 +1,4 @@
-using Application.Abstractions.Services;
+using Application.Contracts.Services;
 using Application.Models.Commons.Paginations;
 using Application.Models.Entities;
 using Application.Models.Primitives.EntityIds;

@@ -1,4 +1,4 @@
-using Application.Abstractions.Services;
+using Application.Contracts.Services;
 using Confluent.Kafka;
 using Integration.Kafka.Commons;
 using Integration.Kafka.Extensions;
@@ -25,7 +25,6 @@ public static class KafkaServicesExtensions
 
         ArgumentNullException.ThrowIfNull(descriptor.ImplementationType);
 
-        // Важно!!! регистрация AddScoped<IService, Service>() todo: спросить про scrutor?! Оттуда нам нужно decorate.
         Func<IServiceProvider, IOrderService> factory =
             serviceProvider => (IOrderService)ActivatorUtilities.CreateInstance(serviceProvider, descriptor.ImplementationType);
 

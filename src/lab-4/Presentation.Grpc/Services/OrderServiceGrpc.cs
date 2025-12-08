@@ -1,4 +1,4 @@
-﻿using Application.Abstractions.Services;
+﻿using Application.Contracts.Services;
 using Application.Models.Primitives.EntityIds;
 using Grpc.Core;
 using Lab3.Contracts.Services.Order;

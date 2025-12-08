@@ -1,6 +1,6 @@
 ﻿using Application.Models.Entities;
 
-namespace Application.Abstractions.Services;
+namespace Application.Contracts.Services;
 
 public interface IProductService
 {

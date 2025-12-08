@@ -1,5 +1,5 @@
 ﻿using Application.Abstractions.Repositories;
-using Application.Abstractions.Services;
+using Application.Contracts.Services;
 using Application.Models.Commons.Paginations;
 using Application.Models.CreationParameters;
 using Application.Models.Entities;

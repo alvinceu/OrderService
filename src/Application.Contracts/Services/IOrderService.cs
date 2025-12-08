@@ -2,7 +2,7 @@
 using Application.Models.Entities;
 using Application.Models.Primitives.EntityIds;
 
-namespace Application.Abstractions.Services;
+namespace Application.Contracts.Services;
 
 public interface IOrderService
 {
