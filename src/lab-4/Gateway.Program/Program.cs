@@ -13,7 +13,15 @@ builder
 
 builder
     .Services
-    .AddMyGrpcClient();
+    .AddOrderProcessingServiceGrpcClient();
+
+builder
+    .Services
+    .AddOrderServiceGrpcClient();
+
+builder
+    .Services
+    .AddProductServiceGrpcClient();
 
 builder
     .Services

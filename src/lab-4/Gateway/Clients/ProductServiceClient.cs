@@ -4,7 +4,7 @@ using Lab3.Contracts.Services.Product;
 
 namespace Gateway.Clients;
 
-public class ProductServiceClient(ProductService.ProductServiceClient grpcClient)
+public sealed class ProductServiceClient(ProductService.ProductServiceClient grpcClient)
 {
     public async Task<ProductCreatedDto> CreateProductAsync(CreateProductDto dto, CancellationToken ct)
     {

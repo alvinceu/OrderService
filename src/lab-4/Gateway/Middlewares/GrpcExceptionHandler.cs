@@ -24,6 +24,19 @@ internal sealed class GrpcExceptionHandler : IMiddleware
 
             await context.Response.WriteAsJsonAsync(response, context.RequestAborted);
         }
+        catch (RpcException ex) when (ex.StatusCode == StatusCode.NotFound)
+        {
+            context
+                .Response
+                .StatusCode = StatusCodes.Status404NotFound;
+
+            var response = new
+            {
+                ex.Status.Detail,
+            };
+
+            await context.Response.WriteAsJsonAsync(response, context.RequestAborted);
+        }
         catch (RpcException ex)
         {
             context

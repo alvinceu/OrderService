@@ -8,7 +8,7 @@ namespace Gateway.Extensions;
 
 public static class GrpcClientExtensions
 {
-    public static void AddMyGrpcClient(this IServiceCollection services)
+    public static void AddOrderServiceGrpcClient(this IServiceCollection services)
     {
         services
             .AddGrpcClient<OrderServiceClient>((serviceProvider, optionsFactory) =>
@@ -20,7 +20,10 @@ public static class GrpcClientExtensions
 
                 optionsFactory.Address = new Uri(options.OrderService.Address);
             });
+    }
 
+    public static void AddProductServiceGrpcClient(this IServiceCollection services)
+    {
         services
             .AddGrpcClient<ProductServiceClient>((serviceProvider, optionsFactory) =>
             {
@@ -30,6 +33,20 @@ public static class GrpcClientExtensions
                 ArgumentException.ThrowIfNullOrWhiteSpace(options.ProductService.Address);
 
                 optionsFactory.Address = new Uri(options.ProductService.Address);
+            });
+    }
+
+    public static void AddOrderProcessingServiceGrpcClient(this IServiceCollection services)
+    {
+        services
+            .AddGrpcClient<ProductServiceClient>((serviceProvider, optionsFactory) =>
+            {
+                GrpcServicesOptions options = serviceProvider.GetRequiredService<IOptions<GrpcServicesOptions>>().Value;
+
+                ArgumentNullException.ThrowIfNull(options.OrderProcessingService);
+                ArgumentException.ThrowIfNullOrWhiteSpace(options.OrderProcessingService.Address);
+
+                optionsFactory.Address = new Uri(options.OrderProcessingService.Address);
             });
     }
 }
