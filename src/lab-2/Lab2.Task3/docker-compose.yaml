@@ -1,0 +1,37 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: lab-2-tools-postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: "pg_isready -U postgres -d postgres"
+      interval: 1m30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+    networks:
+      - configuration-service-network
+  
+  configuration-service:
+    image: ghcr.io/is-csms-y27/lab-2-tools:master
+    platform: linux/amd64
+    container_name: configuration-service
+    networks:
+      - configuration-service-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - '8080:8080'
+    environment:
+      Persistence__Postgres__Host: postgres
+
+networks:
+  configuration-service-network:
+    driver: bridge

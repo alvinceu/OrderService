@@ -11,7 +11,19 @@
     <Project Path="src\lab-2\Lab2.Task3\Lab2.Task3.csproj" Type="Classic C#" />
   </Folder>
   <Folder Name="/src/lab-3/" />
-  <Folder Name="/src/lab-4/" />
+  <Folder Name="/src/lab-4/">
+    <Project Path="src\lab-4\Application.Abstractions\Application.Abstractions.csproj" Type="Classic C#" />
+    <Project Path="src\lab-4\Application.Contracts\Application.Contracts.csproj" Type="Classic C#" />
+    <Project Path="src\lab-4\Application.Models\Application.Models.csproj" Type="Classic C#" />
+    <Project Path="src\lab-4\Application\Application.csproj" Type="Classic C#" />
+    <Project Path="src\lab-4\Gateway.Program\Gateway.Program.csproj" Type="Classic C#" />
+    <Project Path="src\lab-4\Gateway\Gateway.csproj" Type="Classic C#" />
+    <Project Path="src\lab-4\Infrastructure.Persistence\Infrastructure.Persistence.csproj" Type="Classic C#" />
+    <Project Path="src\lab-4\Integration.Kafka\Integration.Kafka.csproj" Type="Classic C#" />
+    <Project Path="src\lab-4\Presentation.Grpc.Program\Presentation.Grpc.Program.csproj" Type="Classic C#" />
+    <Project Path="src\lab-4\Presentation.Grpc\Presentation.Grpc.csproj" Type="Classic C#" />
+    <Project Path="src\lab-4\Presentation.Kafka\Presentation.Kafka.csproj" Type="Classic C#" />
+  </Folder>
   <Folder Name="/src/lab-5/" />
   <Folder Name="/tests/">
     <Project Path="tests\Lab1.Tests\Lab1.Tests.csproj" Type="Classic C#" />

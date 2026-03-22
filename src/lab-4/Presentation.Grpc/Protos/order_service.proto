@@ -1,0 +1,146 @@
+﻿syntax = "proto3";
+
+package services.order;
+option csharp_namespace = "Lab3.Contracts.Services.Order";
+
+import "google/protobuf/timestamp.proto";
+
+service OrderService {
+  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
+  rpc AddOrderItem(AddOrderItemRequest) returns (AddOrderItemResponse);
+  rpc RemoveOrderItem(RemoveOrderItemRequest) returns (RemoveOrderItemResponse);
+  rpc SetProcessing(SetOrderStateProcessingRequest) returns (SetOrderStateProcessingResponse);
+  rpc SetCancelled(SetOrderStateCancelledRequest) returns (SetOrderStateCancelledResponse);
+  rpc FindOrderHistoryItems(FindOrderHistoryItemsRequest) returns (stream FindOrderHistoryResponse);
+}
+
+message RemoveOrderItemResponse {
+  
+}
+message SetOrderStateProcessingResponse {
+  
+}
+
+
+message SetOrderStateCancelledResponse {
+
+}
+
+message SetOrderStateProcessingRequest {
+    int64 order_id = 1;
+}
+
+message SetOrderStateCancelledRequest {
+  int64 order_id = 1;
+}
+
+
+message CreateOrderResponse {
+    Order order = 1;
+}
+
+message Order {
+  int64 order_id = 1;
+  OrderState order_state = 2;
+  google.protobuf.Timestamp created_at = 3;
+  string createdBy = 4;
+}
+
+message AddOrderItemResponse {
+    OrderItem item = 1;
+}
+
+message OrderItem {
+  int64 order_item_id = 1;
+  int64 order_id = 2;
+  int64 product_id = 3;
+  int32 quantity = 4;
+  bool is_deleted = 5;
+}
+
+message OrderHistoryItem {
+  int64 order_history_item_id = 1;
+  int64 orderId = 2;
+  google.protobuf.Timestamp created_at = 3;
+  OrderHistoryItemKind kind = 4;
+  OrderHistoryItemPayload payload = 5;
+}
+
+message OrderHistoryItemPayload {
+  oneof payload {
+    OrderCreatedPayload order_created = 1;
+    ItemAddedPayload item_added = 2;
+    ItemRemovedPayload item_removed = 3;
+    StateChangedPayload state_changed = 4;
+    ProcessingStageChangedPayload processing_state_changed = 5;
+  }
+}
+
+message OrderCreatedPayload {}
+
+message ItemAddedPayload {
+  int64 order_item_id = 1;
+}
+
+message ItemRemovedPayload {
+  int64 order_item_id = 1;
+}
+
+message StateChangedPayload {
+  OrderState previous_state = 1;
+  OrderState current_state = 2;
+}
+
+message ProcessingStageChangedPayload {
+    ProcessingStage stage = 1;
+}
+
+enum ProcessingStage {
+    PROCESSING_STAGE_APPROVED = 0;
+    PROCESSING_STAGE_PACKING = 1;
+    PROCESSING_STAGE_PACKED = 2;
+    PROCESSING_STAGE_IN_DELIVERY = 3;
+    PROCESSING_STAGE_DELIVERED = 4;
+}
+
+message FindOrderHistoryResponse {
+    OrderHistoryItem item = 1;
+}
+
+enum OrderState {
+  ORDER_STATE_CREATED = 0;
+  ORDER_STATE_PROCESSING = 1;
+  ORDER_STATE_COMPLETED = 2;
+  ORDER_STATE_CANCELLED = 3;
+}
+
+enum OrderHistoryItemKind {
+  ORDER_HISTORY_ITEM_KIND_CREATED = 0;
+  ORDER_HISTORY_ITEM_KIND_ITEM_ADDED = 1;
+  ORDER_HISTORY_ITEM_KIND_ITEM_REMOVED = 2;
+  ORDER_HISTORY_ITEM_KIND_STATE_CHANGED = 3;
+}
+
+message AddOrderItemRequest {
+  int64 order_id = 1;
+  int64 product_id = 2;
+  int32 quantity = 3;
+}
+
+message RemoveOrderItemRequest {
+  int64 order_item_id = 1;
+}
+
+message PaginationInfo {
+  int32 page_size = 1;
+  optional int64 page_token = 2;
+}
+
+message FindOrderHistoryItemsRequest {
+  int64 order_id = 1;
+  PaginationInfo pagination_info = 2;
+}
+
+message CreateOrderRequest {
+  string created_by = 1;
+}

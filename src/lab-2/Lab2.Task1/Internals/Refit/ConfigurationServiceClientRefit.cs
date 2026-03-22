@@ -8,15 +8,15 @@ internal sealed class ConfigurationServiceClientRefit(IConfigurationServiceClien
 {
     private int MaxPageSize => 200;
 
-    public async IAsyncEnumerable<KeyValuePair<string, string>> GetAllConfigurationAsync([EnumeratorCancellation] CancellationToken cancellationToken)
+    public async IAsyncEnumerable<KeyValuePair<string, string>> GetAllConfigurationAsync([EnumeratorCancellation] CancellationToken ct)
     {
         int pageSize = MaxPageSize;
         string? pageToken = null;
 
-        while (!cancellationToken.IsCancellationRequested)
+        while (!ct.IsCancellationRequested)
         {
             Paginated<KeyValuePair<string, string>>? response =
-                await GetConfigurationsAsync(pageSize, pageToken, cancellationToken);
+                await GetConfigurationsAsync(pageSize, ct, pageToken);
 
             if (response is null)
             {
@@ -37,9 +37,9 @@ internal sealed class ConfigurationServiceClientRefit(IConfigurationServiceClien
         }
     }
 
-    private async Task<Paginated<KeyValuePair<string, string>>?> GetConfigurationsAsync(int pageSize, string? pageToken = null, CancellationToken cancellationToken = default)
+    private async Task<Paginated<KeyValuePair<string, string>>?> GetConfigurationsAsync(int pageSize, CancellationToken ct, string? pageToken = null)
     {
         var parameters = new ConfigurationServiceRefitQueryParameters { PageSize = pageSize, PageToken = pageToken };
-        return await service.GetConfigurationsAsync(parameters, cancellationToken);
+        return await service.GetConfigurationsAsync(parameters, ct);
     }
 }

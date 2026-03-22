@@ -1,0 +1,23 @@
+﻿syntax = "proto3";
+
+package services.product;
+option csharp_namespace = "Lab3.Contracts.Services.Product";
+
+service ProductService {
+  rpc CreateProduct(CreateProductRequest) returns (CreateProductResponse);
+}
+
+message CreateProductRequest {
+  string name = 1;
+  string price = 2;
+}
+
+message CreateProductResponse {
+  Product product = 1;
+}
+
+message Product {
+  int64 product_id = 1;
+  string name = 2;
+  string price = 3;
+}

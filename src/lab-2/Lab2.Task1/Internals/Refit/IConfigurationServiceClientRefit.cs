@@ -6,5 +6,5 @@ namespace Lab2.Task1.Internals.Refit;
 internal interface IConfigurationServiceClientRefit
 {
     [Get("/configurations")]
-    Task<Paginated<KeyValuePair<string, string>>?> GetConfigurationsAsync([Query] ConfigurationServiceRefitQueryParameters parameters, CancellationToken cancellationToken = default);
+    Task<Paginated<KeyValuePair<string, string>>?> GetConfigurationsAsync([Query] ConfigurationServiceRefitQueryParameters parameters, CancellationToken ct);
 }

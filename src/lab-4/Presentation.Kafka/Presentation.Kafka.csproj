@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <Protobuf ProtoRoot="Protos" Include="Protos/**/*.proto" GrpcServices="None"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Google.Protobuf" />
+        <PackageReference Include="Grpc.AspNetCore" />
+        <PackageReference Include="Grpc.Tools">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" />
+        <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\..\lab-4\Application.Abstractions\Application.Abstractions.csproj" />
+      <ProjectReference Include="..\Application.Contracts\Application.Contracts.csproj" />
+      <ProjectReference Include="..\Integration.Kafka\Integration.Kafka.csproj" />
+    </ItemGroup>
+</Project>

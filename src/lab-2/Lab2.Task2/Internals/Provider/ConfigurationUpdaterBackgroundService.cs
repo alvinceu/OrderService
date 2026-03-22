@@ -8,12 +8,12 @@ internal sealed class ConfigurationUpdaterBackgroundService(
     IConfigurationServiceClientAdapter adapter,
     TimerOptions options) : BackgroundService
 {
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken ct)
     {
         using PeriodicTimer timer = new(TimeSpan.FromSeconds(options.IntervalSeconds));
-        while (await timer.WaitForNextTickAsync(stoppingToken))
+        while (await timer.WaitForNextTickAsync(ct))
         {
-            IDictionary<string, string?> data = await adapter.LoadAsync(stoppingToken);
+            IDictionary<string, string?> data = await adapter.LoadAsync(ct);
 
             provider.AcceptData(data);
         }

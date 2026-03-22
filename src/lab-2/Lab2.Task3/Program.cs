@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 
 builder
-    .Services
     .AddConfigurationServiceRefit();
 
 builder
