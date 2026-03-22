@@ -12,8 +12,8 @@
   </Folder>
   <Folder Name="/src/lab-3/" />
   <Folder Name="/src/lab-4/">
-    <Project Path="src\Application.Contracts\Application.Contracts.csproj" Type="Classic C#" />
     <Project Path="src\lab-4\Application.Abstractions\Application.Abstractions.csproj" Type="Classic C#" />
+    <Project Path="src\lab-4\Application.Contracts\Application.Contracts.csproj" Type="Classic C#" />
     <Project Path="src\lab-4\Application.Models\Application.Models.csproj" Type="Classic C#" />
     <Project Path="src\lab-4\Application\Application.csproj" Type="Classic C#" />
     <Project Path="src\lab-4\Gateway.Program\Gateway.Program.csproj" Type="Classic C#" />
